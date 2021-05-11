@@ -21,9 +21,4 @@ public class BookConfig {
         bookService.init(); // Создаем структуру БД при необходимости
         return bookService;
     }
-
-    @Bean
-    public BookRest bookRest() {
-        return new BookRest(bookService());
-    }
 }
