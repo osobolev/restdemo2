@@ -2,6 +2,7 @@ package ru.mirea.books4;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ru.mirea.books4.nonspring.BookRepository;
 import ru.mirea.books4.nonspring.BookService;
 
 import javax.sql.DataSource;
@@ -16,9 +17,14 @@ public class BookConfig {
     }
 
     @Bean
+    public BookRepository bookRepository() {
+        BookRepository bookRepo = new BookRepository(ds);
+        bookRepo.init(); // Создаем структуру БД при необходимости
+        return bookRepo;
+    }
+
+    @Bean
     public BookService bookService() {
-        BookService bookService = new BookService(ds);
-        bookService.init(); // Создаем структуру БД при необходимости
-        return bookService;
+        return new BookService(bookRepository());
     }
 }

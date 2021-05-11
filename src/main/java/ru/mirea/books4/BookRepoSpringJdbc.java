@@ -13,11 +13,11 @@ import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
-public class BookServiceSpringJdbc {
+public class BookRepoSpringJdbc {
 
     private final JdbcTemplate jdbc;
 
-    public BookServiceSpringJdbc(DataSource ds) {
+    public BookRepoSpringJdbc(DataSource ds) {
         this.jdbc = new JdbcTemplate(ds);
     }
 
@@ -43,13 +43,6 @@ public class BookServiceSpringJdbc {
         return jdbc.query("select id, author, title from books", getBookRowMapper());
     }
 
-    private static void checkDetails(BookDetails details) {
-        if (details.getAuthor() == null)
-            throw new IllegalArgumentException("No author");
-        if (details.getTitle() == null)
-            throw new IllegalArgumentException("No title");
-    }
-
     public Optional<Book> getBook(int id) {
         List<Book> found = jdbc.query("select id, author, title from books where id = ?", getBookRowMapper(), id);
         Book book = DataAccessUtils.singleResult(found);
@@ -57,7 +50,6 @@ public class BookServiceSpringJdbc {
     }
 
     public Book addBook(BookDetails details) {
-        checkDetails(details);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(
             con -> con.prepareStatement("insert into books (author, title) values (?, ?)", new String[] {"id"}),
@@ -69,7 +61,6 @@ public class BookServiceSpringJdbc {
     }
 
     public Optional<Book> updateBook(int id, BookDetails details) {
-        checkDetails(details);
         int updated = jdbc.update(
             "update books set author = ?, title = ? where id = ?",
             details.getAuthor(), details.getTitle(), id
