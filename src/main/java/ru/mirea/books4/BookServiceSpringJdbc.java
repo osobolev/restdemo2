@@ -1,4 +1,4 @@
-package ru.mirea.books4.nonspring;
+package ru.mirea.books4;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.support.DataAccessUtils;
@@ -6,6 +6,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import ru.mirea.books4.nonspring.Book;
+import ru.mirea.books4.nonspring.BookDetails;
 
 import javax.sql.DataSource;
 import java.util.List;
